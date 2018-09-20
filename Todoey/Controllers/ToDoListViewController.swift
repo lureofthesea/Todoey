@@ -10,7 +10,6 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-//    var itemArray = ["Find Mike", "Buy Eggs", "Destroy she said"]
     var itemArray = [Item]()
     
     var defaults = UserDefaults.standard
@@ -35,8 +34,8 @@ class ToDoListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "ToDoItemCell")
         
+//        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "ToDoItemCell")
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
         let item = itemArray[indexPath.row]
@@ -64,8 +63,6 @@ class ToDoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    //MARK - Add New Items
-    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
@@ -75,9 +72,7 @@ class ToDoListViewController: UITableViewController {
             item.title = textField.text!
             
             self.itemArray.append(item)
-            
             self.saveItems()
-            
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
@@ -94,7 +89,6 @@ class ToDoListViewController: UITableViewController {
         do {
             let data = try encoder.encode(itemArray)
             try data.write(to: dataFilePath!)
-            
         } catch {
             print("Error encoding item array, \(error)")
         }
