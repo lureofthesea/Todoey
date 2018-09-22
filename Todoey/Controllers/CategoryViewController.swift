@@ -8,8 +8,11 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
+    
+    let realm = try! Realm()
     
     var categoryArray = [Category]()
     
@@ -42,10 +45,10 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
             //what will happen once the user clicks the Add Category button on the UIAlert
-            let category = Category(context: self.context)
-            category.name = textField.text!
-            self.categoryArray.append(category)
-            self.saveCategories()
+            let newCategory = Category()
+            newCategory.name = textField.text!
+            self.categoryArray.append(newCategory)
+            self.save(category: newCategory)
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
@@ -59,40 +62,42 @@ class CategoryViewController: UITableViewController {
     
     //MARK: Data Manipulation Methods
     
-    func saveCategories() {
+    func save(category: Category) {
         
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
-            print("Error saving category context, \(error)")
+            print("Error saving category data, \(error)")
         }
         
         tableView.reloadData()
         
     }
     
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    func loadCategories() {
         
-        do {
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fetching category data from context \(error)")
-        }
-        
-        tableView.reloadData()
+//        do {
+//            categoryArray = try context.fetch(request)
+//        } catch {
+//            print("Error fetching category data from context \(error)")
+//        }
+//        
+//        tableView.reloadData()
     }
     
     //MARK: TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "goToItems", sender: self)
-        
-        //        context.delete(categoryArray[indexPath.row])
-        //        categoryArray.remove(at: indexPath.row)
-        //        saveCategories()
-        //        tableView.deselectRow(at: indexPath, animated: true)
-        
-    }
+            performSegue(withIdentifier: "goToItems", sender: self)
+            
+            //        context.delete(categoryArray[indexPath.row])
+            //        categoryArray.remove(at: indexPath.row)
+            //        saveCategories()
+            //        tableView.deselectRow(at: indexPath, animated: true)
+            
+        }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! ToDoListViewController

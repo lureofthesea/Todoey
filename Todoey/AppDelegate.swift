@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             let realm = try Realm()
 
-            }
+        
         } catch {
             print("Error initializing new realm \(error)")
         }
