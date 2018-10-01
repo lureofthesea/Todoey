@@ -17,7 +17,6 @@ class CategoryViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories()
-        tableView.rowHeight = 85.0
     }
     
     //MARK: Nil Coalescing Operator
