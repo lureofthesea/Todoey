@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class ToDoListViewController: SwipeTableViewController {
 
@@ -24,6 +25,7 @@ class ToDoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        tableView.separatorStyle = .none
     }
 
     //MARK - Tableview Datasource Methods
@@ -41,6 +43,14 @@ class ToDoListViewController: SwipeTableViewController {
             
             cell.textLabel?.text = item.title
             
+            if let color = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: (CGFloat(indexPath.row) / CGFloat(toDoItems!.count+1))) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+            }
+            
+            print("row: \(indexPath.row)")
+            print("percentage: \((CGFloat(indexPath.row) / CGFloat(toDoItems!.count+1)))")
+
             //Ternary operator
             // value = condition ? valueIfTrue : valueIfFalse
             
